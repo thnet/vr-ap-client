@@ -1,18 +1,33 @@
-package fi.holti.jyu.vr.model;
+package fi.holti.jyu.vr.model.simple;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class TimeTableRow {
-
+public class SimpleTimetableRow {
 	private String trainNumber;
 	private String departureDate;
-	private String stationShortCode;
+	private String stationsShortCode;
 	private String type;
 	private String scheduledTime;
 	private String actualTime;
 	private String differenceInMinutes;
-	private List<Cause> causes = new ArrayList<Cause>();
+	private String weatherLocationId;
+
+	public SimpleTimetableRow(String trainNumber, String departureDate, String stationsCode, String type,
+			String scheduledTime, String actualTime, String differenceInMinutes) {
+		this.trainNumber = trainNumber;
+		this.departureDate = departureDate;
+		this.stationsShortCode = stationsCode;
+		this.type = type;
+		this.scheduledTime = scheduledTime;
+		this.actualTime = actualTime;
+		this.differenceInMinutes = differenceInMinutes;
+	}
+
+	public String getStationsShortCode() {
+		return stationsShortCode;
+	}
+
+	public void setStationsShortCode(String stationsShortCode) {
+		this.stationsShortCode = stationsShortCode;
+	}
 
 	public String getType() {
 		return type;
@@ -46,28 +61,12 @@ public class TimeTableRow {
 		this.differenceInMinutes = differenceInMinutes;
 	}
 
-	public List<Cause> getCauses() {
-		return causes;
-	}
-
-	public void setCauses(List<Cause> causes) {
-		this.causes = causes;
-	}
-
 	public String getTrainNumber() {
 		return trainNumber;
 	}
 
 	public void setTrainNumber(String trainNumber) {
 		this.trainNumber = trainNumber;
-	}
-
-	public String getStationShortCode() {
-		return stationShortCode;
-	}
-
-	public void setStationShortCode(String stationShortCode) {
-		this.stationShortCode = stationShortCode;
 	}
 
 	public String getDepartureDate() {
@@ -78,4 +77,11 @@ public class TimeTableRow {
 		this.departureDate = departureDate;
 	}
 
+	public String getWeatherLocationId() {
+		return weatherLocationId;
+	}
+
+	public void setWeatherLocationId(String weatherLocationId) {
+		this.weatherLocationId = weatherLocationId;
+	}
 }

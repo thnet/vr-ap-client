@@ -44,21 +44,23 @@ public class TrainServiceImpl implements TrainService {
 
 			while (calendar.getTime().before(endDate)) {
 
-				String url = parseREstUrl(calendar, trainNumber);
-				try {
-					List<Train> trains = Arrays.asList(restTemplate.getForObject(url, Train[].class));
-					allTrains.addAll(trains);
-				} catch (HttpMessageNotReadableException e) {
-					// Try to get exception response as a string
+				if (isDayForPrediction(calendar.get(Calendar.DAY_OF_WEEK))) {
+
+					String url = parseREstUrl(calendar, trainNumber);
 					try {
-						String jsonResponse = restTemplate.getForObject(url, String.class);
-						failedRequests.put(url, jsonResponse);
-					} catch (Exception e2) {
-						// if even that fails, backup it
-						failedRequests.put(url, e2.getMessage());
+						List<Train> trains = Arrays.asList(restTemplate.getForObject(url, Train[].class));
+						allTrains.addAll(trains);
+					} catch (HttpMessageNotReadableException e) {
+						// Try to get exception response as a string
+						try {
+							String jsonResponse = restTemplate.getForObject(url, String.class);
+							failedRequests.put(url, jsonResponse);
+						} catch (Exception e2) {
+							// if even that fails, backup it
+							failedRequests.put(url, e2.getMessage());
+						}
 					}
 				}
-
 				calendar.add(Calendar.DAY_OF_MONTH, 1);
 			}
 			calendar.setTime(startDate);
@@ -74,6 +76,10 @@ public class TrainServiceImpl implements TrainService {
 
 		return allTrains;
 
+	}
+
+	private boolean isDayForPrediction(int i) {
+		return Calendar.WEDNESDAY == i;
 	}
 
 	private String parseREstUrl(Calendar calendar, String trainNumber) {
